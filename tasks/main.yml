@@ -43,6 +43,7 @@
     mode: 0644
     validate: nginx -t -c %s
   notify:
+    - restore selinux context on nginx pid
     - reload nginx
 
 - name: Ensure nginx service is running as configured.
