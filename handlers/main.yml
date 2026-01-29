@@ -6,6 +6,12 @@
   command: nginx -t -c /etc/nginx/nginx.conf
   changed_when: false
 
+- name: restore selinux context on nginx pid
+  command: restorecon -v /var/run/nginx.pid /run/nginx.pid
+  ignore_errors: true
+  when: ansible_selinux is defined and ansible_selinux.status == 'enabled'
+  changed_when: false
+
 - name: reload nginx
   service: name=nginx state=reloaded
   when: nginx_service_state == "started"
